@@ -16,8 +16,7 @@ def home():
    departure_date = request.args.get('departure_date')
    n_guests = int(request.args.get('n_guests'))
    return jsonify({'offer': get_offers(arrival_date, departure_date, n_guests)})
-    #return jsonify({'arrival_date': arrival_date, 'departure_date':departure_date, 'n_guests':n_guests})
 
 
 if __name__ == '__main__':
-    app.run(debug=os.getenv('DEBUG'))
+    app.run(debug=os.getenv('DEBUG'), ssl_context='adhoc')

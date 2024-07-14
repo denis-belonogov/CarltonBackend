@@ -13,6 +13,9 @@ def get_offers(arrival_date, departure_date, n_persons):
 
     URL = f"https://onhotels.de/#/booking/results?propertyId=CARLTON&arrival={arrival_date.strftime('%Y-%m-%d')}&departure={departure_date.strftime('%Y-%m-%d')}&adults={n_persons}&"
     options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     driver = webdriver.Chrome(options=options)
     driver.get(URL)
     time.sleep(1)
@@ -23,6 +26,7 @@ def get_offers(arrival_date, departure_date, n_persons):
 
     time.sleep(6)
     html = re.sub(r'<!.*?->','', driver.page_source)
+    driver.quit()
     soup = BeautifulSoup(html, "html.parser")
     rooms = soup.body.find('div', attrs={'class':'ibe-room-results-list'})
 
