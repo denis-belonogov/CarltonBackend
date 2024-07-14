@@ -1,15 +1,16 @@
-﻿from selenium.webdriver.common.by import By
-from selenium import webdriver
-from bs4 import BeautifulSoup
-import time
+﻿import datetime
 import re
-import datetime
+import time
+
 import URLSearchParams
+from bs4 import BeautifulSoup
+from selenium import webdriver
 
 
 def get_offers(request_args):
     URL = str(URLSearchParams.URLSearchParams(
-        "https://ibe-server.uphotel.agency/ibe-preview/79579851-938d-441c-b6b9-9e24d15aa192#/booking/results?").append(request_args))
+        "https://ibe-server.uphotel.agency/ibe-preview/79579851-938d-441c-b6b9-9e24d15aa192#/booking/results?").append(
+        request_args))
 
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
@@ -23,10 +24,7 @@ def get_offers(request_args):
     soup = BeautifulSoup(html, "html.parser")
     rooms = soup.body.find('div', attrs={'class': 'ibe-room-results-list'})
 
-    offer_text = f'Sehr geehrter Gast, \nwie von Ihnen gewünscht sende ich Ihnen ein Angebot für ein Zimmer für {
-        request_args["adults"]}  {"Personen" if int(request_args["adults"]) > 1 else "Person"}  vom {
-        datetime.datetime.strptime(request_args["arrival_date"], "%Y-%m-%d").strftime("%d.%m.%Y")}  zum {
-            datetime.datetime.strptime(request_args["departure_date"], "%Y-%m-%d").strftime("%d.%m.%Y")}.\n\n'
+    offer_text = f'Sehr geehrter Gast, \nwie von Ihnen gewünscht sende ich Ihnen ein Angebot für ein Zimmer für {request_args["adults"]}  {"Personen" if int(request_args["adults"]) > 1 else "Person"} vom {datetime.datetime.strptime(request_args["arrival_date"], "%Y-%m-%d").strftime("%d.%m.%Y")} zum {datetime.datetime.strptime(request_args["departure_date"], "%Y-%m-%d").strftime("%d.%m.%Y")}.\n\n'
 
     for room in rooms.contents:
         room_prices = room.contents[0].find(
@@ -39,6 +37,5 @@ def get_offers(request_args):
                 with_breakfast = "mit Frühstück" in room_price.contents[0].text
                 price = room_price.contents[0].text.split('€')[0].strip()
                 city_tax = round(float(price.replace(',', '.')) * 0.075, 2)
-                offer_text += f"{room_name}, {'inkl. Frühstück ' if with_breakfast else ''}zum Preis von {
-                    price} € + {str(city_tax).replace('.', ',')} € City-Tax je Zimmer\n"
+                offer_text += f"{room_name}, {'inkl. Frühstück ' if with_breakfast else ''}zum Preis von {price} € + {str(city_tax).replace('.', ',')} € City-Tax je Zimmer\n"
     return offer_text

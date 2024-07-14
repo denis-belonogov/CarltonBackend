@@ -1,4 +1,8 @@
 flask
 flask-wtf
 selenium
-dotenv
+python-dotenv
+beautifulsoup4
+pyopenssl
+URLSearchParams
+flask_cors
