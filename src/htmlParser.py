@@ -11,7 +11,7 @@ def get_offers(request_args):
     URL = str(URLSearchParams.URLSearchParams(
         "https://ibe-server.uphotel.agency/ibe-preview/79579851-938d-441c-b6b9-9e24d15aa192#/booking/results?").append(
         request_args))
-
+    URL += "&"
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
@@ -24,7 +24,7 @@ def get_offers(request_args):
     soup = BeautifulSoup(html, "html.parser")
     rooms = soup.body.find('div', attrs={'class': 'ibe-room-results-list'})
 
-    offer_text = f'Sehr geehrter Gast, \nwie von Ihnen gewünscht sende ich Ihnen ein Angebot für ein Zimmer für {request_args["adults"]}  {"Personen" if int(request_args["adults"]) > 1 else "Person"} vom {datetime.datetime.strptime(request_args["arrival_date"], "%Y-%m-%d").strftime("%d.%m.%Y")} zum {datetime.datetime.strptime(request_args["departure_date"], "%Y-%m-%d").strftime("%d.%m.%Y")}.\n\n'
+    offer_text = f'Sehr geehrter Gast, \nwie von Ihnen gewünscht sende ich Ihnen ein Angebot für ein Zimmer für {request_args["adults"]}  {"Personen" if int(request_args["adults"]) > 1 else "Person"} vom {datetime.datetime.strptime(request_args["arrival"], "%Y-%m-%d").strftime("%d.%m.%Y")} zum {datetime.datetime.strptime(request_args["departure"], "%Y-%m-%d").strftime("%d.%m.%Y")}.\n\n'
 
     for room in rooms.contents:
         room_prices = room.contents[0].find(
