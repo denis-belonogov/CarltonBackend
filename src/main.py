@@ -20,6 +20,9 @@ app.config.from_object(config_by_name[environment])
 
 db.init_app(app)
 
+with app.app_context():
+    db.create_all()
+
 app.register_blueprint(keys_blueprint, url_prefix='/keys')
 app.register_blueprint(offers_blueprint, url_prefix='/offers')
 app.register_blueprint(rooms_blueprint, url_prefix='/rooms')
@@ -42,6 +45,4 @@ def internal_error(error):
 
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(ssl_context='adhoc')

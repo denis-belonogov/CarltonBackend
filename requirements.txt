@@ -4,5 +4,8 @@ selenium
 python-dotenv
 beautifulsoup4
 pyopenssl
-URLSearchParams
 flask_cors
+SQLAlchemy
+Flask-SQLAlchemy
+Flask-Migrate
+webdriver-manager
