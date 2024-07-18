@@ -3,11 +3,9 @@ import re
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from webdriver_manager.chrome import ChromeDriverManager
 
 
 def generate_offers_text(request_args):
@@ -20,14 +18,15 @@ def generate_offers_text(request_args):
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
-    with webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options) as driver:
-        driver.get(URL)
-        WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CLASS_NAME, 'ibe-room-results-list'))
-        )
-        html = re.sub(r'<!.*?->', '', driver.page_source)
-        soup = BeautifulSoup(html, "html.parser")
-        rooms = soup.find('div', attrs={'class': 'ibe-room-results-list'})
+    driver = webdriver.Chrome(options=options)
+    driver.get(URL)
+    WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, 'ibe-room-results-list'))
+    )
+    html = re.sub(r'<!.*?->', '', driver.page_source)
+    soup = BeautifulSoup(html, "html.parser")
+    rooms = soup.find('div', attrs={'class': 'ibe-room-results-list'})
+    driver.quit()
 
     offer_text = f'Sehr geehrter Gast, \nwie von Ihnen gewünscht sende ich Ihnen ein Angebot für ein Zimmer für {request_args["adults"]}  {"Personen" if int(request_args["adults"]) > 1 else "Person"} vom {datetime.datetime.strptime(request_args["arrival"], "%Y-%m-%d").strftime("%d.%m.%Y")} zum {datetime.datetime.strptime(request_args["departure"], "%Y-%m-%d").strftime("%d.%m.%Y")}.\n\n'
 
