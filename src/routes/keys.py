@@ -12,7 +12,7 @@ def get_keys():
     return jsonify({'keys': [key.to_json() for key in keys]})
 
 
-@keys_blueprint.route('/add', methods=['POST'])
+@keys_blueprint.route('/', methods=['POST'])
 def add_key():
     brand = request.json.get('brand')
     name = request.json.get('name')

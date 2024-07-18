@@ -5,8 +5,8 @@ from src.models.model_associations import key_room
 
 
 class RoomType(enum.Enum):
-    GUEST = 1
-    STAFF = 2
+    Guest = 1
+    Staff = 2
 
 
 class Room(db.Model):

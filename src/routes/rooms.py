@@ -19,12 +19,12 @@ def get_room(id):
 
 
 @rooms_blueprint.route('/', methods=['POST'])
-def create_room():
+def add_room():
     data = request.get_json()
     if not all([data.get('name'), data.get('type'), data.get('floor')]):
         return jsonify({'message': 'Missing data'}), 400
     try:
-        room = Room(name=data['name'], type=RoomType[data['type']], floor=data['floor'])
+        room = Room(name=data['name'], type=RoomType(data['type']), floor=data['floor'])
         db.session.add(room)
         db.session.commit()
         return jsonify(room.to_json()), 201
