@@ -32,7 +32,7 @@ def add_room():
         return jsonify({'message': str(e)}), 400
 
 
-@rooms_blueprint.route('/<int:id>', methods=['PUT'])
+@rooms_blueprint.route('/update/<int:id>', methods=['PUT'])
 def update_room(id):
     room = Room.query.get_or_404(id)
     data = request.get_json()
@@ -43,7 +43,7 @@ def update_room(id):
     return jsonify(room.to_json()), 200
 
 
-@rooms_blueprint.route('/<int:id>', methods=['DELETE'])
+@rooms_blueprint.route('/delete/<int:id>', methods=['DELETE'])
 def delete_room(id):
     room = Room.query.get_or_404(id)
     db.session.delete(room)
