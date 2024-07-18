@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-def get_offers(request_args):
+def generate_offers_text(request_args):
     URL = "https://ibe-server.uphotel.agency/ibe-preview/79579851-938d-441c-b6b9-9e24d15aa192#/booking/results?"
     for key, value in request_args.items():
         URL += f"{key}={value}&"
