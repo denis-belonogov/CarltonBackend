@@ -20,7 +20,7 @@ class Room(db.Model):
     def __init__(self, name, type, floor, **kwargs):
         if not name:
             raise ValueError("Name cannot be empty")
-        if floor <= 0:
+        if floor < 0:
             raise ValueError("Floor must be a positive number")
         if type not in RoomType:
             raise ValueError("Invalid room type")
