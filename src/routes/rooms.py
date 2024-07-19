@@ -21,7 +21,7 @@ def get_room(id):
 @rooms_blueprint.route('/', methods=['POST'])
 def add_room():
     data = request.get_json()
-    if not all([data.get('name'), data.get('type'), data.get('floor')]):
+    if any([data.get('name') is None, data.get('type') is None, data.get('floor') is None]):
         return jsonify({'message': 'Missing data'}), 400
     try:
         room = Room(name=data['name'], type=RoomType(data['type']), floor=data['floor'])
