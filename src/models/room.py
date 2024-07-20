@@ -16,7 +16,7 @@ class Room(db.Model):
     type = db.Column(db.Enum(RoomType), nullable=False, unique=False)
     floor = db.Column(db.Integer, nullable=False, unique=False)
     keys = db.relationship('Key', secondary=key_room, lazy='selectin', back_populates='rooms')
-    color = db.Column(db.String(10), nullable=False, unique=False, index=True)
+    color = db.Column(db.String(10), nullable=True, unique=False, index=True)
 
     def __init__(self, name, type, floor, **kwargs):
         if not name:
