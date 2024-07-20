@@ -12,7 +12,7 @@ class RoomType(enum.Enum):
 class Room(db.Model):
     __tablename__ = 'rooms'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False, unique=True, index=True)
+    name = db.Column(db.String(20), nullable=False, unique=False, index=True)
     type = db.Column(db.Enum(RoomType), nullable=False, unique=False)
     floor = db.Column(db.Integer, nullable=False, unique=False)
     keys = db.relationship('Key', secondary=key_room, lazy='selectin', back_populates='rooms')
