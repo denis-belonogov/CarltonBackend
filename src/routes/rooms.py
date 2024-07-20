@@ -24,7 +24,7 @@ def add_room():
     if any([data.get('name') is None, data.get('type') is None, data.get('floor') is None]):
         return jsonify({'message': 'Missing data'}), 400
     try:
-        room = Room(name=data['name'], type=RoomType(data['type']), floor=data['floor'])
+        room = Room(name=data['name'], type=RoomType(int(data['type'])), floor=data['floor'])
         db.session.add(room)
         db.session.commit()
         return jsonify(room.to_json()), 201
