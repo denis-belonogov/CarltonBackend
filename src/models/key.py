@@ -13,8 +13,6 @@ class Key(db.Model):
     def __init__(self, brand, name, amount, **kwargs):
         if not brand:
             raise ValueError("Brand cannot be empty")
-        if not name:
-            raise ValueError("Name cannot be empty")
         if amount <= 0:
             raise ValueError("Amount must be a positive number")
         super(Key, self).__init__(brand=brand, name=name, amount=amount, **kwargs)

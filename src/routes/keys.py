@@ -19,8 +19,8 @@ def add_key():
     amount = request.json.get('amount')
     if any([brand is None, amount is None]):
         return jsonify({'message': 'Missing data'}), 400
-    new_key = Key(brand=brand, name=name, amount=amount)
     try:
+        new_key = Key(brand=brand, name=name, amount=amount)
         db.session.add(new_key)
         db.session.commit()
         return jsonify({'message': 'Key added'}), 201
