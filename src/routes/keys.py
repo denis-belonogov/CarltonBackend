@@ -17,7 +17,7 @@ def add_key():
     brand = request.json.get('brand')
     name = request.json.get('name')
     amount = request.json.get('amount')
-    if any([brand is None, name is None, amount is None]):
+    if any([brand is None, amount is None]):
         return jsonify({'message': 'Missing data'}), 400
     new_key = Key(brand=brand, name=name, amount=amount)
     try:
