@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flask_migrate import Migrate
 
 from src.config import config_by_name
 from src.db import db
@@ -22,6 +23,8 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
+
+migrate = Migrate(app, db)
 
 app.register_blueprint(keys_blueprint, url_prefix='/keys')
 app.register_blueprint(offers_blueprint, url_prefix='/offers')

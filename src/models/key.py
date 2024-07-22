@@ -5,8 +5,8 @@ from src.models.model_associations import key_room
 class Key(db.Model):
     __tablename__ = 'keys'
     id = db.Column(db.Integer, primary_key=True)
-    brand = db.Column(db.String(20), nullable=False, unique=False)
-    name = db.Column(db.String(20), nullable=False, unique=True, index=True)
+    brand = db.Column(db.String(20), nullable=True, unique=False)
+    name = db.Column(db.String(20), nullable=True, unique=False, index=True)
     amount = db.Column(db.Integer, nullable=False, unique=False)
     rooms = db.relationship('Room', secondary=key_room, lazy='selectin', back_populates='keys')
 

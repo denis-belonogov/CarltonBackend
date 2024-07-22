@@ -16,7 +16,7 @@ class Room(db.Model):
     type = db.Column(db.Enum(RoomType), nullable=False, unique=False)
     floor = db.Column(db.Integer, nullable=False, unique=False)
     keys = db.relationship('Key', secondary=key_room, lazy='selectin', back_populates='rooms')
-    color = db.Column(db.String(10), nullable=True, unique=False, index=True)
+    dead = db.Column(db.Boolean, default=False)
 
     def __init__(self, name, type, floor, **kwargs):
         if not name:
@@ -33,6 +33,7 @@ class Room(db.Model):
             'name': self.name,
             'type': self.type.name,
             'floor': self.floor,
+            'dead': self.dead,
             'keys': [key.id for key in self.keys]
         }
 
