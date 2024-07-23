@@ -12,6 +12,12 @@ def get_keys():
     return jsonify({'keys': [key.to_json() for key in keys]})
 
 
+@keys_blueprint.route('/<int:key_id>', methods=['GET'])
+def get_key(key_id):
+    key = Key.query.get_or_404(key_id)
+    return jsonify(key.to_json()), 200
+
+
 @keys_blueprint.route('/', methods=['POST'])
 def add_key():
     brand = request.json.get('brand')
