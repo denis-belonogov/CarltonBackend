@@ -38,9 +38,8 @@ def add_key():
 def update_key(key_id):
     key = Key.query.get_or_404(key_id)
     data = request.get_json()
-    key.brand = data.get('brand', key.brand)
-    key.name = data.get('name', key.name)
-    key.amount = data.get('amount', key.amount)
+    for filed_name, field_value in data.items():
+        key.__setattr__(filed_name, field_value)
     try:
         db.session.commit()
         return jsonify({'message': 'Key updated'}), 200

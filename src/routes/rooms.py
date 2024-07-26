@@ -36,9 +36,8 @@ def add_room():
 def update_room(id):
     room = Room.query.get_or_404(id)
     data = request.get_json()
-    room.name = data.get('name', room.name).strip()
-    room.type = RoomType[data.get('type', room.type.name)] if data.get('type') else room.type
-    room.floor = data.get('floor', room.floor)
+    for field_name, field_value in data.items():
+        room.__setattr__(field_name, field_value)
     db.session.commit()
     return jsonify(room.to_json()), 200
 
