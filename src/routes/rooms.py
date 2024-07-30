@@ -61,3 +61,15 @@ def add_key_to_room(room_id, key_id):
         return jsonify({'message': 'Key added to room'}), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 400
+
+
+@rooms_blueprint.route('/update/<int:room_id>/remove_key/<int:key_id>', methods=['POST'])
+def remove_key_from_room(room_id, key_id):
+    room = Room.query.get_or_404(room_id)
+    key = Key.query.get_or_404(key_id)
+    room.keys.remove(key)
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Key removed from room'}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
