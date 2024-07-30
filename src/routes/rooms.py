@@ -1,6 +1,7 @@
 ﻿from flask import Blueprint, request, jsonify
 
 from src.db import db
+from src.models.key import Key
 from src.models.room import Room, RoomType
 
 rooms_blueprint = Blueprint('rooms', __name__)
@@ -49,3 +50,15 @@ def delete_room(id):
     db.session.delete(room)
     db.session.commit()
     return jsonify({'message': 'Room deleted successfully'}), 200
+
+
+@rooms_blueprint.route('/update/<int:room_id>/add_key/<int:key_id>', methods=['POST'])
+def add_key_to_room(room_id, key_id):
+    room = Room.query.get_or_404(room_id)
+    key = Key.query.get_or_404(key_id)
+    room.keys.append(key)
+    try:
+        db.session.commit()
+        return jsonify({'message': 'Key added to room'}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 400
