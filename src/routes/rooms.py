@@ -17,18 +17,24 @@ def _build_cors_prelight_response():
 
 @rooms_blueprint.route('/', methods=['GET'])
 def get_rooms():
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
     rooms = Room.query.all()
     return jsonify({'rooms': [room.to_json() for room in rooms]}), 200
 
 
 @rooms_blueprint.route('/<int:id>', methods=['GET'])
 def get_room(id):
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
     room = Room.query.get_or_404(id)
     return jsonify(room.to_json()), 200
 
 
 @rooms_blueprint.route('/', methods=['POST'])
 def add_room():
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
     data = request.get_json()
     if any([data.get('name') is None, data.get('type') is None, data.get('floor') is None]):
         return jsonify({'message': 'Missing data'}), 400
@@ -43,6 +49,8 @@ def add_room():
 
 @rooms_blueprint.route('/update/<int:id>', methods=['PUT'])
 def update_room(id):
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
     room = Room.query.get_or_404(id)
     data = request.get_json()
     for field_name, field_value in data.items():
@@ -53,6 +61,8 @@ def update_room(id):
 
 @rooms_blueprint.route('/delete/<int:id>', methods=['DELETE'])
 def delete_room(id):
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
     room = Room.query.get_or_404(id)
     db.session.delete(room)
     db.session.commit()
@@ -61,6 +71,8 @@ def delete_room(id):
 
 @rooms_blueprint.route('/update/<int:room_id>/add_key/<int:key_id>', methods=['POST'])
 def add_key_to_room(room_id, key_id):
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
     room = Room.query.get_or_404(room_id)
     key = Key.query.get_or_404(key_id)
     room.keys.append(key)
