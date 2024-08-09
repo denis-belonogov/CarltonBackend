@@ -7,6 +7,14 @@ from src.models.room import Room, RoomType
 rooms_blueprint = Blueprint('rooms', __name__)
 
 
+def _build_cors_prelight_response():
+    response = jsonify({'message': 'CORS preflight response'})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type,Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS")
+    return response
+
+
 @rooms_blueprint.route('/', methods=['GET'])
 def get_rooms():
     rooms = Room.query.all()
@@ -65,6 +73,8 @@ def add_key_to_room(room_id, key_id):
 
 @rooms_blueprint.route('/update/<int:room_id>/remove_key/<int:key_id>', methods=['POST'])
 def remove_key_from_room(room_id, key_id):
+    if request.method == "OPTIONS":
+        return _build_cors_prelight_response()
     room = Room.query.get_or_404(room_id)
     key = Key.query.get_or_404(key_id)
     room.keys.remove(key)
