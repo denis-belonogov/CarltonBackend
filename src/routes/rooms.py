@@ -56,8 +56,6 @@ def update_room(id):
     for field_name, field_value in data.items():
         if field_name == 'keys':
             continue
-        if field_name == 'type':
-            field_value = RoomType(int(field_value))
         room.__setattr__(field_name, field_value)
     db.session.commit()
     return jsonify(room.to_json()), 200
