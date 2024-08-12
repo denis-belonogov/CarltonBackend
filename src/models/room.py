@@ -34,7 +34,16 @@ class Room(db.Model):
             'type': self.type.name,
             'floor': self.floor,
             'dead': self.dead,
-            'keys': [key.to_json() for key in self.keys]
+            'keys': [key.to_json_simple() for key in self.keys]
+        }
+
+    def to_json_simple(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'type': self.type.name,
+            'floor': self.floor,
+            'dead': self.dead
         }
 
     def __repr__(self):
