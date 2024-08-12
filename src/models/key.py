@@ -23,7 +23,7 @@ class Key(db.Model):
             'name': self.name,
             'brand': self.brand,
             'amount': self.amount,
-            'rooms': [room.id for room in self.rooms]
+            'rooms': [room.to_json() for room in self.rooms]
         }
 
     def __repr__(self):

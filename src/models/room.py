@@ -34,7 +34,7 @@ class Room(db.Model):
             'type': self.type.name,
             'floor': self.floor,
             'dead': self.dead,
-            'keys': [key.id for key in self.keys]
+            'keys': [key.to_json() for key in self.keys]
         }
 
     def __repr__(self):
